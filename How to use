@@ -1,0 +1,27 @@
+Codeanywhere
+
+Open html and try type something
+
+save as html
+
+right click the projet and choose ssh terminal
+
+type
+
+SAVE AND PUSH
+
+git add -A                        (select all)
+
+git commit -am "file description" (save)
+
+git push origin master            (push to github)
+
+
+git add .                         (select here [all?])
+
+git commit -m "file name"         (save)
+
+git push heroku master            (push to heroku)
+
+
+IF WANT TO TEST
