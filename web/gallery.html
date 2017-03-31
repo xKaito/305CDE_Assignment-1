@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gallery - Beautiful Photo Gallery</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="mainPage/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="mainPage/css/business-casual.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.js'></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+ 
+<script src="/socket.io/socket.io.js"></script> 
+<script type='text/javascript'>//<![CDATA[
+$( document ).ready(function() { 
+  
+  var socket = io();
+  var canAdd = false;
+    
+    //press login button
+    $( "#addToFav1" ).click(function() {
+      
+       if (canAdd) {
+         alert("Add to favourite button CLICKED");
+       
+         var photo = {};
+
+         photo.type = "fav";
+         photo.pic = "mainPage/img/slide-1.jpg";
+         photo.date = "February 13, 2017";
+
+         $.post("/gallery",photo);
+         /*   
+         $.ajax( {
+           url:"http://305cde_assignment_1-superman200961102777.codeanyapp.com:1234/user",
+           type: "POST",
+           data: login
+         });
+         */
+       } else alert("You must login first!");
+       
+    });
+  
+   $( "#addToFav2" ).click(function() {
+      
+       if (canAdd) {
+         alert("Add to favourite button CLICKED");
+       
+         var photo = {};
+
+         photo.type = "fav";
+         photo.pic = "mainPage/img/slide-2.jpg";
+         photo.date = "January 25, 2017";
+
+         $.post("/gallery",photo);
+         /*   
+         $.ajax( {
+           url:"http://305cde_assignment_1-superman200961102777.codeanyapp.com:1234/user",
+           type: "POST",
+           data: login
+         });
+         */
+       } else alert("You must login first!");
+       
+    });
+  
+    
+    $( "#addToFav3" ).click(function() {
+      
+       if (canAdd) {
+         alert("Add to favourite button CLICKED");
+       
+         var photo = {};
+
+         photo.type = "fav";
+         photo.pic = "mainPage/img/slide-3.jpg";
+         photo.date = "January 20, 2017";
+
+         $.post("/gallery",photo);
+         /*   
+         $.ajax( {
+           url:"http://305cde_assignment_1-superman200961102777.codeanyapp.com:1234/user",
+           type: "POST",
+           data: login
+         });
+         */
+       } else alert("You must login first!");
+       
+    });
+  
+    
+  
+    //receive message of user
+    socket.on("curUser", function(data) {
+      canAdd = true;
+    });
+  
+    //receive message of user
+    socket.on("noUser", function(data) {
+      canAdd = false;
+    });
+  
+    
+});
+</script>
+
+<body>
+
+    <div class="brand">Beautiful Photo Gallery</div>
+    <div class="address-bar">Find beautiful photos here!</div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a class="navbar-brand" href="home">Beautiful Photo Gallery</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="home">Home</a>
+                    </li>
+                    <li>
+                        <a href="user">User</a>
+                    </li>
+                    <li>
+                        <a href="gallery">Gallery</a>
+                    </li>
+                    <li>
+                        <a href="contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Photo
+                        <strong>Gallery</strong>
+                    </h2>
+                    <hr>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <img class="img-responsive img-border img-full" src="mainPage/img/slide-1.jpg" alt="">
+                    <h2>Island
+                        <br>
+                        <small>February 13, 2017</small>
+                    </h2>
+                      <button id = "addToFav1" type="button" class="btn btn-default btn-lg">Add to favourite</button>
+                    <hr>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <img class="img-responsive img-border img-full" src="mainPage/img/slide-2.jpg" alt="">
+                    <h2>Border
+                        <br>
+                        <small>January 25, 2017</small>
+                    </h2>
+                      <button id = "addToFav2" type="button" class="btn btn-default btn-lg">Add to favourite</button>
+                    <hr>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <img class="img-responsive img-border img-full" src="mainPage/img/slide-3.jpg" alt="">
+                    <h2>Landscape
+                        <br>
+                        <small>January 20, 2017</small>
+                    </h2>
+                      <button id = "addToFav3" type="button" class="btn btn-default btn-lg">Add to favourite</button>
+                    <hr>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <ul class="pager">
+                        <li class="previous"><a href="#">&larr; Older</a>
+                        </li>
+                        <li class="next"><a href="#">Newer &rarr;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Beautiful Photo Gallery 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="mainPage/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="mainPage/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
