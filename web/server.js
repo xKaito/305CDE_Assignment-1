@@ -38,10 +38,17 @@ var regFaile = false;	//email used
 
 //username of current user
 var curUser = "no one";
+var picNum;
 
 
 //user's favourite list
-var userList;
+var userList1 = "";
+var userList2 = "";
+var userList3 = "";
+var canUse1 = false;
+var canUse2 = false;
+var canUse3 = false;
+var addHere = "";
 
 var server = http.createServer(function onRequest(request, response) {
 			var urlParts = url.parse(request.url);
@@ -97,9 +104,16 @@ var server = http.createServer(function onRequest(request, response) {
 																			sendSuc = true;
 																			console.log("The user " + username + " login with password " + password + ".");
 																			curUser = username;
+																			picNum = items[i].picCount;
 																			console.log("Current user = " + curUser);
-																			userList = items[i].favourite;
-																			console.log(userList);
+																			console.log("picCount = " + picNum);
+																			userList1 = items[i].favourite1;
+																			userList2 = items[i].favourite2;
+																			userList3 = items[i].favourite3;
+																			
+																			console.log(userList1);
+																			console.log(userList2);
+																			console.log(userList3);
 																		} else {
 																			loginFail = true;
 																			sendFail = true;
@@ -134,7 +148,10 @@ var server = http.createServer(function onRequest(request, response) {
 														username: rusername, 
 														email: remail,
 														password: rpassword,
-														favourite: []
+														picCount: 0,
+														favourite1: [],
+														favourite2: [],
+														favourite3: []
 													};
 													
 													
@@ -182,7 +199,6 @@ var server = http.createServer(function onRequest(request, response) {
 														});
 													}
 													
-													
 
 													//Close connection
 													db.close();
@@ -218,7 +234,7 @@ var server = http.createServer(function onRequest(request, response) {
 													
 														db.collection('user', function (err, collection) {
 															
-															collection.update({username: curUser}, {$set: {favourite: photoToAdd}}, function (err, items) {
+															collection.update({username: curUser}, {$set: {favourite1: photoToAdd}}, function (err, items) {
 																if (err) {
 																	console.log(err);
 																} else {
@@ -226,14 +242,39 @@ var server = http.createServer(function onRequest(request, response) {
 																}
 															});
 															
+															//collection.remove();
 
 															collection.find().toArray(function(err, items) {
 																	if(err) throw err;    
 																	console.log(items);            
 															});
+															
+															collection.find({username: curUser}).toArray(function(err, items) {
+																	console.log("Checking with the database for register data...");
+																	if(err) throw err;
+																	//check whether the username and email has been used for register before
+																	if (curUser.favourite1 === ""){
+																		canUse1 = true;																		
+																	} else  canUse1 = false;
+																
+																	if (curUser.favourite2 === ""){
+																		canUse2 = true;
+																	} else  canUse2 = false;
+																
+																	if (curUser.favourite3 === ""){
+																		canUse3 = true;
+																	} else  canUse3 = false;
+																
+																	console.log(canUse1);
+																	console.log(canUse2);
+																	console.log(canUse3);
+																
+																//if = canUse3,   addHere = favourite3;
+																// put this up a a little bit
 														});
-													
-													
+															
+															
+														});
 
 													//Close connection
 													db.close();
@@ -353,8 +394,16 @@ console.log("Server is running at http://305cde_assignment-zx007890850409.codean
 // IO is used to send message between server an client
 var io = require("socket.io").listen(server);
 
+
+
 	
 function sendMsg() {
+	var list1 = "";
+	var list2 = "";
+	var list3 = "";
+	list1 = userList1;
+	list2 = userList2;
+	list3 = userList3;
 	//send message when login is successful
 	if (loginSuc === true) {
 		if (sendSuc) {
@@ -362,8 +411,15 @@ function sendMsg() {
 			io.emit("can_login", { message: "Login Successful!" });
 			sendSuc = false;
 		}
-	io.emit("favList", userList);
-	console.log("favList = " + userList);
+	io.emit("favList1", userList1);
+	io.emit("favList2", userList2);
+	io.emit("favList3", userList3);
+	console.log( "favList1" );
+	console.log( list1 );
+	console.log( "favList2" );
+	console.log( list2 );
+	console.log( "favList3" );
+	console.log( list3 );
 	}
 	
 	//send message when login is fail
@@ -422,5 +478,5 @@ function sendMsg() {
 	
 }
 	
-setInterval(sendMsg, 300);
+setInterval(sendMsg, 5000);
 //5000 = 5 sec

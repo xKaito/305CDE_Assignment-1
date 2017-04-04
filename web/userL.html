@@ -60,19 +60,21 @@ $( document ).ready(function() {
 
     socket.on("can_logout", function(data) {
       success = true;
-      if (success === true) 
+      if (success == true) 
           alert(data.message + " See you later ~");
       success = false;
       window.location.href = "/home";
     });
   
+    var dontLoop = false;
     socket.on("favList", function(data) {
-      pic1.pic = JSON.parse(data.pic);
-      alert(pic1.pic);
-      pic1.date = data.date;
+      //pic1.pic = JSON.parse(data.pic);
+      //alert(pic1.pic);
+      //pic1.date = data.date;
+      alert(data);
     })
   
-  
+  /*
   $( "#img1" ).attr("src", pic1.pic);
   alert($("#img1").src);
   document.getElementById("date1").innerHTML = pic1.date;
@@ -83,7 +85,7 @@ $( document ).ready(function() {
   
   $( "#img3" ).attr("src", pic1.pic);
   alert($("#img3").src);
-  document.getElementById("date3").innerHTML = pic1.date;
+  document.getElementById("date3").innerHTML = pic1.date;*/
     
 });
 </script>
