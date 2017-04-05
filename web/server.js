@@ -155,7 +155,7 @@ var server = http.createServer(function onRequest(request, response) {
 													};
 													
 													
-													var canAdd = false;
+													var canAdd = true;
 													console.log("canAdd = " + canAdd);
 													
 													db.collection('user', function (err, collection) {
@@ -507,5 +507,5 @@ function sendMsg() {
 	
 }
 	
-setInterval(sendMsg, 3000);
+setInterval(sendMsg, 300);
 //5000 = 5 sec
