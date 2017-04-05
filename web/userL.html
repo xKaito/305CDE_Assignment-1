@@ -36,7 +36,15 @@
 $( document ).ready(function() {
   
    var socket = io();
-   var pic1;
+   var pic1 = "";
+   var pic2 = "";
+   var pic3 = "";
+    
+   var sdate1;
+   var sdate2;
+   var sdate3;
+  
+   var test = "";
     
     //press login button
     $( "#logoutBtn" ).click(function() {
@@ -55,6 +63,8 @@ $( document ).ready(function() {
        */       
     });
   
+
+  
     // Receive message when logout is successful
     var success = false;
 
@@ -66,26 +76,36 @@ $( document ).ready(function() {
       window.location.href = "/home";
     });
   
-    var dontLoop = false;
-    socket.on("favList", function(data) {
-      //pic1.pic = JSON.parse(data.pic);
-      //alert(pic1.pic);
-      //pic1.date = data.date;
-      alert(data);
+
+    socket.on("favList1", function(data) {
+      var x = JSON.stringify(data.pic);
+      pic1  = x.substring(x.lastIndexOf("=")+2,x.lastIndexOf("\""));
+      $( "#img1" ).attr("src", pic1);
+      
+      var y = JSON.stringify(data.date);
+      sdate1  = y.substring(y.lastIndexOf("="));
+      document.getElementById("date1").innerHTML = sdate1;
     })
-  
-  /*
-  $( "#img1" ).attr("src", pic1.pic);
-  alert($("#img1").src);
-  document.getElementById("date1").innerHTML = pic1.date;
-  
-  $( "#img2" ).attr("src", pic1.pic);
-  alert($("#img2").src);
-  document.getElementById("date2").innerHTML = pic1.date;
-  
-  $( "#img3" ).attr("src", pic1.pic);
-  alert($("#img3").src);
-  document.getElementById("date3").innerHTML = pic1.date;*/
+    
+    socket.on("favList2", function(data) {
+      var x = JSON.stringify(data.pic);
+      pic2  = x.substring(x.lastIndexOf("=")+2,x.lastIndexOf("\""));
+      $( "#img2" ).attr("src", pic2);
+      
+      var y = JSON.stringify(data.date);
+      sdate2  = y.substring(y.lastIndexOf("="));
+      document.getElementById("date2").innerHTML = sdate2;
+    })
+    
+    socket.on("favList3", function(data) {
+      var x = JSON.stringify(data.pic);
+      pic3  = x.substring(x.lastIndexOf("=")+2,x.lastIndexOf("\""));
+      $( "#img3" ).attr("src", pic3);
+      
+      var y = JSON.stringify(data.date);
+      sdate3  = y.substring(y.lastIndexOf("="));
+      document.getElementById("date3").innerHTML = sdate3;
+    })
     
 });
 </script>
@@ -166,12 +186,12 @@ $( document ).ready(function() {
                     <hr>
                     <p class="text-center">This is your favourite list of photos, you can add or remove photos here anytime you want!</p>
                     <div class="col-lg-12 text-center">
-                        <img id = "img1" class="img-responsive img-border img-full" src="mainPage/img/slide-1.jpg" alt="">
-                        <h2>Island
+                        <img id = "img1" class="img-responsive img-border img-full" src="" alt="">
+                        <h2>
                             <br>
-                            <small id = "date1">February 13, 2017</small>
+                            <small id = "date1"></small>
                         </h2>
-                        <a href="#" class="btn btn-default btn-lg">Remove from favourite</a>
+                        <a id = "r1" href="#" class="btn btn-default btn-lg">Remove from favourite</a>
                         <hr>
                     </div>
                     <div class="col-lg-12 text-center">
@@ -180,7 +200,7 @@ $( document ).ready(function() {
                             <br>
                             <small id = "date2"></small>
                         </h2>
-<!--                         <a href="#" class="btn btn-default btn-lg">Remove from favourite</a> -->
+                         <a id = "r2" href="#" class="btn btn-default btn-lg">Remove from favourite</a>
                         <hr>
                     </div>
                     <div class="col-lg-12 text-center">
@@ -189,7 +209,7 @@ $( document ).ready(function() {
                             <br>
                             <small id = "date3"></small>
                         </h2>
-<!--                         <a href="#" class="btn btn-default btn-lg">Remove from favourite</a> -->
+                         <a id = "r3" href="#" class="btn btn-default btn-lg">Remove from favourite</a>
                         <hr>
                     </div>
                 </div>

@@ -45,10 +45,9 @@ var picNum;
 var userList1 = "";
 var userList2 = "";
 var userList3 = "";
-var canUse1 = false;
-var canUse2 = false;
-var canUse3 = false;
 var addHere = "";
+
+var bridge = -1;
 
 var server = http.createServer(function onRequest(request, response) {
 			var urlParts = url.parse(request.url);
@@ -114,6 +113,7 @@ var server = http.createServer(function onRequest(request, response) {
 																			console.log(userList1);
 																			console.log(userList2);
 																			console.log(userList3);
+																			bridge = items[i].picCount;
 																		} else {
 																			loginFail = true;
 																			sendFail = true;
@@ -230,48 +230,77 @@ var server = http.createServer(function onRequest(request, response) {
 														pic: fpic, 
 														date: fdate
 													};
-														
+													
+													
 													
 														db.collection('user', function (err, collection) {
 															
-															collection.update({username: curUser}, {$set: {favourite1: photoToAdd}}, function (err, items) {
-																if (err) {
-																	console.log(err);
-																} else {
-																	console.log('Update Successful');
-																}
+															collection.find({username: curUser}).toArray(function(err, items) {
+																		if(err) throw err;
+																		if (items !== "") {
+																			//find the requied user in database
+																			for (var i=0; i<items.length; i++) {
+																				if (curUser === items[i].username) {
+																					if (items[i].picCount === 0){
+																						bridge = 0;
+																					} else if (items[i].picCount === 1){
+																						bridge = 1;
+																					} else if (items[i].picCount === 2){
+																						bridge = 2;
+																					} console.log("bridge1 = " + bridge);
+																				}
+																			}
+																		}
 															});
+															
+															console.log("bridge2 = " + bridge);
+															
+															
+															if (bridge === 0) {
+																collection.update({username: curUser}, {$set: {favourite1: photoToAdd, picCount: 1}}, function (err, items) {
+																	if (err) {
+																		console.log(err);
+																	} else {
+																		console.log('Update Successful');
+																	}
+																});
+															} else if (bridge === 1) {
+																collection.update({username: curUser}, {$set: {favourite2: photoToAdd, picCount: 2}}, function (err, items) {
+																	if (err) {
+																		console.log(err);
+																	} else {
+																		console.log('Update Successful');
+																	}
+																});
+															} else if (bridge === 2) {
+																collection.update({username: curUser}, {$set: {favourite3: photoToAdd}}, function (err, items) {
+																	if (err) {
+																		console.log(err);
+																	} else {
+																		console.log('Update Successful');
+																	}
+																});
+															}
+															
+															
+
 															
 															//collection.remove();
 
 															collection.find().toArray(function(err, items) {
 																	if(err) throw err;    
-																	console.log(items);            
+																	console.log(items);
+																	if (items !== "") {
+																			//find the requied user in database
+																			for (var i=0; i<items.length; i++) {
+																				if (curUser === items[i].username) {
+																					userList1 = items[i].favourite1;
+																					userList2 = items[i].favourite2;
+																					userList3 = items[i].favourite3;
+																				}
+																			}
+																	}
 															});
-															
-															collection.find({username: curUser}).toArray(function(err, items) {
-																	console.log("Checking with the database for register data...");
-																	if(err) throw err;
-																	//check whether the username and email has been used for register before
-																	if (curUser.favourite1 === ""){
-																		canUse1 = true;																		
-																	} else  canUse1 = false;
-																
-																	if (curUser.favourite2 === ""){
-																		canUse2 = true;
-																	} else  canUse2 = false;
-																
-																	if (curUser.favourite3 === ""){
-																		canUse3 = true;
-																	} else  canUse3 = false;
-																
-																	console.log(canUse1);
-																	console.log(canUse2);
-																	console.log(canUse3);
-																
-																//if = canUse3,   addHere = favourite3;
-																// put this up a a little bit
-														});
 															
 															
 														});
@@ -478,5 +507,5 @@ function sendMsg() {
 	
 }
 	
-setInterval(sendMsg, 5000);
+setInterval(sendMsg, 3000);
 //5000 = 5 sec
